@@ -2,6 +2,8 @@ var express = require('express');
 var request = require('request');
 var app = express();
 var cors = require('cors');
+var accountSid = require('./twilio_keys').accountSid;
+var authToken = require('./twilio_keys').authToken;
 
 app.use(cors()); //allows overriding cross origin policy (use npm install if needed)
 
@@ -12,6 +14,41 @@ app.get('/testing', function(req, res){ // listens for request on /api route
 
 /* PUT YOUR CODE BETWEEN COMMENTS */
 
+var client = require('twilio')(accountSid, authToken);
+
+
+app.get('/sms', function(req, res) {
+  var message = req.query.message.description + " " + req.query.message.address + " " + req.query.message.date + " " + req.query.message.time;
+
+  client.messages.create({
+     to: req.query.number,
+     from: "+19802081323",
+     body: message
+  }, function(err, message) {
+     res.send(message);
+  });
+})
+
+// the test stuff
+// var accountSid = 'AC85d2134d5594d3ec6a1a5ac648f7e7da';
+// var authToken = 'bd6b158d4558e90899bcf9731d14c380';
+// from: "+15005550006",
+
+// the good stuff
+// var accountSid = 'ACf9cc8d37c8f9b6f70a92905d2df84e30';
+// var authToken = '2a37f2f045fe56d9fa351adff39bd3c5';
+// from: "+19802081323",
+
+//require the Twilio module and create a REST client
+
+
+// client.messages.create({
+//    to: "+15005550006",
+//    from: "+15005550006",
+//    body: "What is up!"
+// }, function(err, message) {
+//    console.log(message.sid);
+// });
 
 
 
